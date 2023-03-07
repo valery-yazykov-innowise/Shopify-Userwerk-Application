@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Card,
   Heading,
   TextContainer,
   DisplayText,
   TextStyle,
+  TextField,
 } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
@@ -13,7 +14,10 @@ export function ProductsCard() {
   const emptyToastProps = { content: null };
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
+  const [script, setScript] = useState('');
   const fetch = useAuthenticatedFetch();
+
+  const handleScriptChange = useCallback((value) => setScript(value), []);
 
   const {
     data,
@@ -53,27 +57,39 @@ export function ProductsCard() {
     <>
       {toastMarkup}
       <Card
-        title="Product Counter"
+        title="Userwerk Application"
         sectioned
         primaryFooterAction={{
-          content: "Populate 5 products",
+          content: "Connect",
           onAction: handlePopulate,
           loading: isLoading,
         }}
       >
         <TextContainer spacing="loose">
           <p>
-            Sample products are created with a default title and price. You can
-            remove them at any time.
+              This application allows you to connect additional scripts to your store after payment.
+              To connect a script to your store you must enter the link to your script below
           </p>
-          <Heading element="h4">
-            TOTAL PRODUCTS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
+            <TextField
+                value={script}
+                onChange={handleScriptChange}
+                autoComplete="script"
+                label="Link to script"
+                type="script"
+                helpText={
+                    <span>
+              We’ll connect this script after paying for the order in your store
+            </span>
+                }
+            />
+          {/*<Heading element="h4">*/}
+          {/*  TOTAL PRODUCTS*/}
+          {/*  <DisplayText size="medium">*/}
+          {/*    <TextStyle variation="strong">*/}
+          {/*      {isLoadingCount ? "-" : data.count}*/}
+          {/*    </TextStyle>*/}
+          {/*  </DisplayText>*/}
+          {/*</Heading>*/}
         </TextContainer>
       </Card>
     </>
