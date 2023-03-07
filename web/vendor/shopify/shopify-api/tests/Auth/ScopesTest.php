@@ -98,52 +98,52 @@ final class ScopesTest extends BaseTestCase
     public function testHasReturnsTrueForImpliedObjectScope()
     {
         $scopes = new Scopes('read_products,write_customers');
-        $this->assertTrue($scopes->has(new Scopes('read_products,read_customers')));
-        $this->assertFalse($scopes->has(new Scopes('write_products,write_customers')));
+        $this->assertTrue($scopes->has(new Scopes('read_script_tags')));
+        $this->assertFalse($scopes->has(new Scopes('write_script_tags')));
     }
 
     public function testHasReturnsTrueForImpliedArrayScope()
     {
-        $scopes = new Scopes('read_products,write_customers');
-        $this->assertTrue($scopes->has(['read_products', 'read_customers']));
-        $this->assertFalse($scopes->has(['write_products', 'write_customers']));
+        $scopes = new Scopes('read_script_tags,write_script_tags');
+        $this->assertTrue($scopes->has(['read_script_tags']));
+        $this->assertFalse($scopes->has(['write_script_tags']));
     }
 
     public function testHasReturnsTrueForImpliedStringScope()
     {
-        $scopes = new Scopes('read_products,write_customers');
-        $this->assertTrue($scopes->has('read_products,read_customers'));
-        $this->assertFalse($scopes->has('write_products,write_customers'));
+        $scopes = new Scopes('read_script_tags,write_script_tags');
+        $this->assertTrue($scopes->has('read_script_tags'));
+        $this->assertFalse($scopes->has('write_script_tags'));
     }
 
     public function testEqualsReturnsTrueForEqualScopes()
     {
-        $scopes1 = new Scopes('write_customers,read_products');
-        $scopes2 = new Scopes(['write_customers', 'read_products']);
+        $scopes1 = new Scopes('read_script_tags,write_script_tags');
+        $scopes2 = new Scopes(['read_script_tags', 'write_script_tags']);
         $this->assertTrue($scopes1->equals($scopes2));
         $this->assertTrue($scopes2->equals($scopes1));
     }
 
     public function testEqualsReturnsFalseForDifferentScopes()
     {
-        $scopes1 = new Scopes('write_customers,read_products');
-        $scopes2 = new Scopes(['write_customers', 'write_orders']);
+        $scopes1 = new Scopes('read_script_tags,write_script_tags');
+        $scopes2 = new Scopes(['read_script_tags', 'write_script_tags']);
         $this->assertFalse($scopes1->equals($scopes2));
         $this->assertFalse($scopes2->equals($scopes1));
     }
 
     public function testEqualsReturnsTrueForImpliedScopes()
     {
-        $scopes1 = new Scopes('write_customers,read_products,write_products');
-        $scopes2 = new Scopes(['write_customers', 'write_products']);
+        $scopes1 = new Scopes('read_script_tags,write_script_tags');
+        $scopes2 = new Scopes(['read_script_tags', 'write_script_tags']);
         $this->assertTrue($scopes1->equals($scopes2));
         $this->assertTrue($scopes2->equals($scopes1));
     }
 
     public function testEqualsReturnsFalseForScopeSubsets()
     {
-        $scopes1 = new Scopes('write_customers,read_products');
-        $scopes2 = new Scopes(['write_customers', 'read_products', 'write_orders']);
+        $scopes1 = new Scopes('read_script_tags,write_script_tags');
+        $scopes2 = new Scopes(['read_script_tags,write_script_tags']);
         $this->assertFalse($scopes1->equals($scopes2));
         $this->assertFalse($scopes2->equals($scopes1));
     }

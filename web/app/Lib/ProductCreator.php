@@ -11,7 +11,7 @@ use Shopify\Clients\Graphql;
 class ProductCreator
 {
     private const CREATE_PRODUCTS_MUTATION = <<<'QUERY'
-    mutation populateProduct($input: ProductInput!) {
+    mutation productCreate($input: ProductInput!) {
         productCreate(input: $input) {
             product {
                 id

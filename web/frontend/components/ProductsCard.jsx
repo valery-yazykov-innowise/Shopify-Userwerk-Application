@@ -43,11 +43,11 @@ export function ProductsCard() {
 
     if (response.ok) {
       await refetchProductCount();
-      setToastProps({ content: "5 products created!" });
+      setToastProps({ content: "Script tag added" });
     } else {
       setIsLoading(false);
       setToastProps({
-        content: "There was an error creating products",
+        content: "There was an error adding script tag",
         error: true,
       });
     }
