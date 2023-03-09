@@ -36,12 +36,16 @@ export function ProductsCard() {
 
   useEffect( () => {
       dataRep();
-  }, [data]);
+      // console.log(data);
+  }, [data]); //data error
 
   function dataRep() {
-      if (data) {
+      if (typeof data === 'object') {
           setSelected(data['status']);
           setScript(data['script_link']);
+      } else {
+          setSelected('No');
+          setScript('');
       }
   }
 

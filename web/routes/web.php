@@ -109,8 +109,13 @@ Route::get('/api/auth/callback', function (Request $request) {
 Route::get('/api/script/data', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
-    Log::info(ScriptTagModel::where('script_tags.shop', $session->getShop())->get());
-    return json_encode(ScriptTagModel::where('script_tags.shop', $session->getShop())->get()[0]);
+    $shopData = ScriptTagModel::where('script_tags.shop', $session->getShop())->get();
+    Log::info(json_encode([]));
+    if (count($shopData) === 0) {
+        return json_encode(1);
+    } else {
+        return json_encode($shopData[0]);
+    }
 })->middleware('shopify.auth');
 
 Route::post('/api/script/create', function (Request $request) {

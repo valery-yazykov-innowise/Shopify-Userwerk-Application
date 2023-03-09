@@ -34,7 +34,7 @@ class ScriptTagAdder
         };
         self::updateJsSettings($scriptJsName, $scriptLink, $status);
         self::createScriptTag($session, $scriptJsName);
-        self::createScriptTagRecord($session, $scriptLink, $scriptJsName);
+        self::createScriptTagRecord($session, $scriptLink, $scriptJsName, $status);
     }
 
     public static function updateScriptTagRecord(Session $session, string $scriptLink, $scriptStatus): void
@@ -58,9 +58,9 @@ class ScriptTagAdder
         ]);
     }
 
-    public static function createScriptTagRecord(Session $session, string $scriptLink, string $scriptJsName): void
+    public static function createScriptTagRecord(Session $session, string $scriptLink, string $scriptJsName, string $status): void
     {
-        $shop = ['shop' => $session->getShop(), 'script_file' => $scriptJsName, 'script_link' => $scriptLink, 'status' => false];
+        $shop = ['shop' => $session->getShop(), 'script_file' => $scriptJsName, 'script_link' => $scriptLink, 'status' => $status];
         ScriptTagModel::where('script_tags')->insert($shop);
     }
 
