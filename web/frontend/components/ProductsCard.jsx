@@ -65,7 +65,7 @@ export function ProductsCard() {
 
       if (response.ok) {
           // await refetchProductCount();
-          setToastProps({ content: "Script tag added!" });
+          setToastProps({ content: "Script tag updated!" });
           setIsLoading(false);
       } else {
           setIsLoading(false);

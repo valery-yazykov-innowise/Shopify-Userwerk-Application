@@ -27,14 +27,18 @@ class ScriptTagAdder
 
     public static function generateScriptFile(Session $session, string $scriptLink, $status): void
     {
-        $scriptJsName = self::PATH_TO_MAIN_JS_FILE . 'scriptTag-' . rand(999, 99999) . '.js';
-        if (!copy(dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . self::PATH_TO_START_JS_FILE,
-            dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . $scriptJsName)) {
-            Log::error('error with copying file');
-        };
-        self::updateJsSettings($scriptJsName, $scriptLink, $status);
-        self::createScriptTag($session, $scriptJsName);
-        self::createScriptTagRecord($session, $scriptLink, $scriptJsName, $status);
+        $scriptJsName = self::PATH_TO_MAIN_JS_FILE . 'scriptTag-' . rand(111111, 999999) . '.js';
+        if (file_exists($scriptJsName)) {
+            Log::error('file exists in this directory');
+        } else {
+            if (!copy(dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . self::PATH_TO_START_JS_FILE,
+                dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . $scriptJsName)) {
+                Log::error('error with copying file');
+            };
+            self::updateJsSettings($scriptJsName, $scriptLink, $status);
+            self::createScriptTag($session, $scriptJsName);
+            self::createScriptTagRecord($session, $scriptLink, $scriptJsName, $status);
+        }
     }
 
     public static function updateScriptTagRecord(Session $session, string $scriptLink, $scriptStatus): void
