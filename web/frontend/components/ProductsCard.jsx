@@ -25,23 +25,22 @@ export function ProductsCard() {
   const handleScriptTextChange = useCallback((value) => setScript(value), []);
   const handleOptionChange = useCallback((value) => setSelected(value), []);
 
-  useEffect( () => {
-      return script
-  }, [script])
-
-
-  const {
-    data,
-    isLoading: isLoadingCount,
-      
-  } = useAppQuery({
-    url: "/api/script/status",
+  const { data, isLoading: isLoadingCount, } = useAppQuery({
+    url: "/api/script/data",
     reactQueryOptions: {
       onSuccess: () => {
         setIsLoading(false);
       },
     },
   });
+  
+  useEffect( () => {
+      if (data) {
+          setSelected(data['status']);
+          setScript(data['script_link']);
+      }
+      return script
+  }, [script, data])
 
   const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />

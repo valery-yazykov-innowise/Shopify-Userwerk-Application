@@ -106,11 +106,11 @@ Route::get('/api/auth/callback', function (Request $request) {
 ////    ScriptTagAdder::call($session);
 //})->middleware('shopify.auth');
 
-Route::get('/api/script/status', function (Request $request) {
+Route::get('/api/script/data', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
-    Log::info(ScriptTagModel::where('script_tags.shop', $session->getShop())->value('status'));
-    return json_encode(ScriptTagModel::where('script_tags.shop', $session->getShop())->value('status'));
+    Log::info(ScriptTagModel::where('script_tags.shop', $session->getShop())->get());
+    return json_encode(ScriptTagModel::where('script_tags.shop', $session->getShop())->get()[0]);
 })->middleware('shopify.auth');
 
 Route::post('/api/script/create', function (Request $request) {
