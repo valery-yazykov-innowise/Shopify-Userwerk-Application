@@ -5,6 +5,7 @@ use App\Lib\AuthRedirection;
 use App\Lib\EnsureBilling;
 use App\Lib\ProductCreator;
 use App\Lib\ScriptTagAdder;
+use App\Models\ScriptTag as ScriptTagModel;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -13,12 +14,13 @@ use Illuminate\Support\Facades\Route;
 use Shopify\Auth\OAuth;
 use Shopify\Auth\Session as AuthSession;
 use Shopify\Clients\HttpHeaders;
-use Shopify\Clients\Rest;
 use Shopify\Context;
 use Shopify\Exception\InvalidWebhookException;
 use Shopify\Utils;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
+use App\Http\Controllers\ScriptTagController;
+use App\Exceptions\ShopifyScriptTagCreatorException;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +37,7 @@ use Shopify\Webhooks\Topics;
 */
 
 Route::fallback(function (Request $request) {
-    if (Context::$IS_EMBEDDED_APP &&  $request->query("embedded", false) === "1") {
+    if (Context::$IS_EMBEDDED_APP && $request->query("embedded", false) === "1") {
         if (env('APP_ENV') === 'production') {
             return file_get_contents(public_path('index.html'));
         } else {
@@ -71,7 +73,7 @@ Route::get('/api/auth/callback', function (Request $request) {
     } else {
         Log::error(
             "Failed to register APP_UNINSTALLED webhook for shop $shop with response body: " .
-                print_r($response->getBody(), true)
+            print_r($response->getBody(), true)
         );
     }
 
@@ -87,20 +89,45 @@ Route::get('/api/auth/callback', function (Request $request) {
     return redirect($redirectUrl);
 });
 
-Route::get('/api/products/create', function (Request $request) {
+//Route::get('/api/script/create', function (Request $request) {
+//
+////    Log::error(response()->json([$request->all()]));
+////    $session = OAuth::callback(
+////        $request->cookie(),
+////        $request->query(),
+////        ['App\Lib\CookieHandler', 'saveShopifyCookie'],
+////    );
+//
+//    /** @var AuthSession */
+//    $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
+//
+////    $req = response()->json($request->all());
+////    $success = $code = $error = null;
+////    ScriptTagAdder::call($session);
+//})->middleware('shopify.auth');
+
+Route::get('/api/script/status', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession'); // Provided by the shopify.auth middleware, guaranteed to be active
+    Log::info(ScriptTagModel::where('script_tags.shop', $session->getShop())->value('status'));
+    return json_encode(ScriptTagModel::where('script_tags.shop', $session->getShop())->value('status'));
+})->middleware('shopify.auth');
 
+Route::post('/api/script/create', function (Request $request) {
+    /** @var AuthSession */
+    $session = $request->get('shopifySession');
+    $scriptLink = $request->input('script');
+    $scriptStatus = $request->input('status');
     $success = $code = $error = null;
     try {
-        ScriptTagAdder::call($session);
+        ScriptTagAdder::call($session, $scriptLink, $scriptStatus);
         $success = true;
         $code = 200;
         $error = null;
     } catch (\Exception $e) {
         $success = false;
 
-        if ($e instanceof ShopifyProductCreatorException) {
+        if ($e instanceof ShopifyScriptTagCreatorException) {
             $code = $e->response->getStatusCode();
             $error = $e->response->getDecodedBody();
             if (array_key_exists("errors", $error)) {

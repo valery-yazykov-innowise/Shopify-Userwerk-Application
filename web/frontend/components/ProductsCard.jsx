@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Card,
   Heading,
@@ -6,26 +6,36 @@ import {
   DisplayText,
   TextStyle,
   TextField,
+  Form,
+  ChoiceList,
 } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
+import axios from "axios";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
+import { useParams } from "react-router-dom";
 
 export function ProductsCard() {
   const emptyToastProps = { content: null };
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
   const [script, setScript] = useState('');
+  const [selected, setSelected] = useState('');
   const fetch = useAuthenticatedFetch();
 
-  const handleScriptChange = useCallback((value) => setScript(value), []);
+  const handleScriptTextChange = useCallback((value) => setScript(value), []);
+  const handleOptionChange = useCallback((value) => setSelected(value), []);
+
+  useEffect( () => {
+      return script
+  }, [script])
+
 
   const {
     data,
-    refetch: refetchProductCount,
     isLoading: isLoadingCount,
-    isRefetching: isRefetchingCount,
+      
   } = useAppQuery({
-    url: "/api/products/count",
+    url: "/api/script/status",
     reactQueryOptions: {
       onSuccess: () => {
         setIsLoading(false);
@@ -33,24 +43,31 @@ export function ProductsCard() {
     },
   });
 
-  const toastMarkup = toastProps.content && !isRefetchingCount && (
+  const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
   );
 
   const handlePopulate = async () => {
     setIsLoading(true);
-    const response = await fetch("/api/products/create");
-
-    if (response.ok) {
-      await refetchProductCount();
-      setToastProps({ content: "Script tag added" });
-    } else {
-      setIsLoading(false);
-      setToastProps({
-        content: "There was an error adding script tag",
-        error: true,
+      const response = await fetch("/api/script/create", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify({ script: script, status: selected }),
       });
-    }
+
+      if (response.ok) {
+          // await refetchProductCount();
+          setToastProps({ content: "Script tag added!" });
+          setIsLoading(false);
+      } else {
+          setIsLoading(false);
+          setToastProps({
+              content: "There was an error adding script tag",
+              error: true,
+          });
+      }
   };
 
   return (
@@ -72,7 +89,7 @@ export function ProductsCard() {
           </p>
             <TextField
                 value={script}
-                onChange={handleScriptChange}
+                onChange={handleScriptTextChange}
                 autoComplete="script"
                 label="Link to script"
                 type="script"
@@ -82,14 +99,15 @@ export function ProductsCard() {
             </span>
                 }
             />
-          {/*<Heading element="h4">*/}
-          {/*  TOTAL PRODUCTS*/}
-          {/*  <DisplayText size="medium">*/}
-          {/*    <TextStyle variation="strong">*/}
-          {/*      {isLoadingCount ? "-" : data.count}*/}
-          {/*    </TextStyle>*/}
-          {/*  </DisplayText>*/}
-          {/*</Heading>*/}
+            <ChoiceList
+                title="Enable script tag"
+                choices={[
+                    {label: 'Yes', value: 'Yes'},
+                    {label: 'No', value: 'No'},
+                ]}
+                selected={selected}
+                onChange={handleOptionChange}
+            />
         </TextContainer>
       </Card>
     </>

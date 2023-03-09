@@ -17,7 +17,7 @@ import { ProductsCard } from "../components";
 export default function HomePage() {
   return (
     <Page narrowWidth>
-      <TitleBar title="App name" primaryAction={null} />
+      <TitleBar title="Userwerk" primaryAction={null} />
       <Layout>
         <Layout.Section>
           <ProductsCard />
