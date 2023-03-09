@@ -33,14 +33,17 @@ export function ProductsCard() {
       },
     },
   });
-  
+
   useEffect( () => {
+      dataRep();
+  }, [data]);
+
+  function dataRep() {
       if (data) {
           setSelected(data['status']);
           setScript(data['script_link']);
       }
-      return script
-  }, [script, data])
+  }
 
   const toastMarkup = toastProps.content && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
