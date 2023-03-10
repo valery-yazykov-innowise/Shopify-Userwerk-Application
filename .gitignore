@@ -19,6 +19,6 @@ npm-debug.log
 yarn-error.log
 
 **/node_modules
-#/web/frontend/.idea
+/web/frontend/.idea
 .idea
 .vscode
