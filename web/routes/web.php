@@ -1,9 +1,7 @@
 <?php
 
-use App\Exceptions\ShopifyProductCreatorException;
 use App\Lib\AuthRedirection;
 use App\Lib\EnsureBilling;
-use App\Lib\ProductCreator;
 use App\Lib\ScriptTagAdder;
 use App\Models\ScriptTag as ScriptTagModel;
 use App\Models\Session;
@@ -19,7 +17,6 @@ use Shopify\Exception\InvalidWebhookException;
 use Shopify\Utils;
 use Shopify\Webhooks\Registry;
 use Shopify\Webhooks\Topics;
-use App\Http\Controllers\ScriptTagController;
 use App\Exceptions\ShopifyScriptTagCreatorException;
 
 /*
@@ -90,7 +87,7 @@ Route::get('/api/auth/callback', function (Request $request) {
 });
 
 Route::get('/api/script/data', function (Request $request) {
-    /** @var AuthSession */
+    /** @var AuthSession $session */
     $session = $request->get('shopifySession');
     $shopData = ScriptTagModel::where('script_tags.shop', $session->getShop())->get();
     if (count($shopData) === 0) {
@@ -101,7 +98,7 @@ Route::get('/api/script/data', function (Request $request) {
 })->middleware('shopify.auth');
 
 Route::post('/api/script/create', function (Request $request) {
-    /** @var AuthSession */
+    /** @var AuthSession $session */
     $session = $request->get('shopifySession');
     $scriptLink = $request->input('script');
     $scriptStatus = $request->input('status', '0');
