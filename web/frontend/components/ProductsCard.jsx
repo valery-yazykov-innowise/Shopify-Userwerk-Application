@@ -36,17 +36,11 @@ export function ProductsCard() {
 
   useEffect( () => {
       dataRep();
-      // console.log(data);
-  }, [data]); //data error
+  }, [data]);
 
   function dataRep() {
-      if (typeof data === 'object') {
-          setSelected(data['status']);
-          setScript(data['script_link']);
-      } else {
-          setSelected('No');
-          setScript('');
-      }
+      setSelected((data?.status === 1 ? '1' : '0') ?? 'No')
+      setScript(data?.script_link ?? '');
   }
 
   const toastMarkup = toastProps.content && (
@@ -108,8 +102,8 @@ export function ProductsCard() {
             <ChoiceList
                 title="Enable script tag"
                 choices={[
-                    {label: 'Yes', value: 'Yes'},
-                    {label: 'No', value: 'No'},
+                    {label: 'Yes', value: '1'},
+                    {label: 'No', value: '0'},
                 ]}
                 selected={selected}
                 onChange={handleOptionChange}

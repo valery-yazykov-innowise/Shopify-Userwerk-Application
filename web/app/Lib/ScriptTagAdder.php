@@ -16,7 +16,7 @@ class ScriptTagAdder
     const PATH_TO_START_JS_FILE = 'js/startScript.js';
     const PATH_TO_MAIN_JS_FILE = 'js/';
 
-    public static function call(Session $session, string $scriptLink, $scriptStatus): void
+    public static function call(Session $session, string $scriptLink, string $scriptStatus): void
     {
         if (count(ScriptTagModel::where('script_tags.shop', $session->getShop())->get()) === 0) {
             self::generateScriptFile($session, $scriptLink, $scriptStatus[0]);
@@ -25,9 +25,9 @@ class ScriptTagAdder
         }
     }
 
-    public static function generateScriptFile(Session $session, string $scriptLink, $status): void
+    public static function generateScriptFile(Session $session, string $scriptLink, string $status): void
     {
-        $scriptJsName = self::PATH_TO_MAIN_JS_FILE . 'scriptTag-' . rand(111111, 999999) . '.js';
+        $scriptJsName = self::PATH_TO_MAIN_JS_FILE . 'scriptTag-' . time() . '.js';
         if (file_exists($scriptJsName)) {
             Log::error('file exists in this directory');
         } else {
@@ -41,7 +41,7 @@ class ScriptTagAdder
         }
     }
 
-    public static function updateScriptTagRecord(Session $session, string $scriptLink, $scriptStatus): void
+    public static function updateScriptTagRecord(Session $session, string $scriptLink, string $scriptStatus): void
     {
         $scriptJsName = ScriptTagModel::where('script_tags.shop', $session->getShop())->value('script_file');
         $shop = ['script_link' => $scriptLink, 'status' => $scriptStatus];
@@ -64,20 +64,16 @@ class ScriptTagAdder
 
     public static function createScriptTagRecord(Session $session, string $scriptLink, string $scriptJsName, string $status): void
     {
-        $shop = ['shop' => $session->getShop(), 'script_file' => $scriptJsName, 'script_link' => $scriptLink, 'status' => $status];
+        $shop = ['shop' => $session->getShop(), 'script_file' => $scriptJsName, 'script_link' => $scriptLink, 'status' => $status, 'created_at' => date("Y-m-d H:i:s")];
         ScriptTagModel::where('script_tags')->insert($shop);
     }
 
     public static function updateJsSettings(string $scriptJsName, string $scriptLink, string $status): void
     {
-        $numStatus = match($status) {
-          'Yes' => 1,
-          'No' => 0
-        };
         $script = file_get_contents($scriptJsName);
         $data = explode(';', $script, 3);
         $data[0] = sprintf("let url = '%s'", $scriptLink);
-        $data[1] = sprintf("\r\nlet showPopup = %d", $numStatus); //edit status when on/off is done
+        $data[1] = sprintf("\r\nlet showPopup = %d", $status);
         $newScript = implode(';', $data);
         file_put_contents($scriptJsName, $newScript);
     }

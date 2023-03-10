@@ -18,7 +18,7 @@ class CreateScriptTagsTable extends Migration
             $table->string('shop');
             $table->string('script_file');
             $table->string('script_link');
-            $table->string('is_working');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }
