@@ -69,6 +69,7 @@ class ScriptTagAdder
             'script_link' => $scriptLink,
             'status' => $scriptStatus,
             'created_at' => date("Y-m-d H:i:s")];
+
         ScriptTagModel::where('script_tags')->insert($shop);
     }
 
@@ -79,6 +80,7 @@ class ScriptTagAdder
         $data[0] = sprintf("let url = '%s'", $scriptLink);
         $data[1] = sprintf("\r\nlet showPopup = %d", $scriptStatus);
         $newScript = implode(";", $data);
+
         file_put_contents($scriptJsName, $newScript);
     }
 }
