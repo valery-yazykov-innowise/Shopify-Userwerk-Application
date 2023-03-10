@@ -5,7 +5,7 @@
 /web/storage/db.sqlite
 /web/vendor
 /web/composer.lock
-.env
+.envgit
 .env.*
 !.env.example
 !.env.testing
