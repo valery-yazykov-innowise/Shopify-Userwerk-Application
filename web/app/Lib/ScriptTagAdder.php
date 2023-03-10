@@ -16,7 +16,7 @@ class ScriptTagAdder
     const PATH_TO_START_JS_FILE = 'js/startScript.js';
     const PATH_TO_MAIN_JS_FILE = 'js/';
 
-    public static function call(Session $session, string $scriptLink, mixed $scriptStatus): void
+    public static function call(Session $session, string $scriptLink, $scriptStatus): void
     {
         if (count(ScriptTagModel::where('script_tags.shop', $session->getShop())->get()) === 0) {
             self::generateScriptFile($session, $scriptLink, $scriptStatus[0]);
@@ -43,10 +43,12 @@ class ScriptTagAdder
 
     public static function updateScriptTagRecord(Session $session, string $scriptLink, string $scriptStatus): void
     {
-        $scriptJsName = ScriptTagModel::where('script_tags.shop', $session->getShop())->value('script_file');
-        $shop = ['script_link' => $scriptLink, 'status' => $scriptStatus];
-        ScriptTagModel::where('script_tags.shop', $session->getShop())->update($shop);
-        self::updateJsSettings($scriptJsName, $scriptLink, $scriptStatus);
+        $scriptRecord = ScriptTagModel::where('script_tags.shop', $session->getShop());
+        $scriptRecord->update([
+            'script_link' => $scriptLink,
+            'status' => $scriptStatus
+        ]);
+        self::updateJsSettings($scriptRecord->value('script_file'), $scriptLink, $scriptStatus);
     }
 
     public static function createScriptTag(Session $session, string $scriptName): void

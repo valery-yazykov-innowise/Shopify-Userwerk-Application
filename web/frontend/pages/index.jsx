@@ -12,7 +12,7 @@ import { TitleBar } from "@shopify/app-bridge-react";
 
 import { trophyImage } from "../assets";
 
-import { ProductsCard } from "../components";
+import { ScriptTagCard } from "../components";
 
 export default function HomePage() {
   return (
@@ -20,7 +20,7 @@ export default function HomePage() {
       <TitleBar title="Userwerk" primaryAction={null} />
       <Layout>
         <Layout.Section>
-          <ProductsCard />
+          <ScriptTagCard />
         </Layout.Section>
       </Layout>
     </Page>
