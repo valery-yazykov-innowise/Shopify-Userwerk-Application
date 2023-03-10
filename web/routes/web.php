@@ -105,6 +105,8 @@ Route::post('/api/script/create', function (Request $request) {
     $session = $request->get('shopifySession');
     $scriptLink = $request->input('script');
     $scriptStatus = $request->input('status');
+    Log::info($scriptLink);
+    Log::info($scriptStatus);
     $success = $code = $error = null;
     try {
         ScriptTagAdder::call($session, $scriptLink, $scriptStatus);

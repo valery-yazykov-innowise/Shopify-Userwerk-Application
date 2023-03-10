@@ -16,7 +16,7 @@ class ScriptTagAdder
     const PATH_TO_START_JS_FILE = 'js/startScript.js';
     const PATH_TO_MAIN_JS_FILE = 'js/';
 
-    public static function call(Session $session, string $scriptLink, string $scriptStatus): void
+    public static function call(Session $session, string $scriptLink, array $scriptStatus): void
     {
         if (count(ScriptTagModel::where('script_tags.shop', $session->getShop())->get()) === 0) {
             self::generateScriptFile($session, $scriptLink, $scriptStatus[0]);
