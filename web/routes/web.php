@@ -95,7 +95,7 @@ Route::get('/api/script/data', function (Request $request) {
     $shopData = ScriptTagModel::where('script_tags.shop', $session->getShop())->get();
     Log::error($shopData);
     if (count($shopData) === 0) {
-        return json_encode(0);
+        return json_encode([]);
     } else {
         return json_encode($shopData[0]);
     }
