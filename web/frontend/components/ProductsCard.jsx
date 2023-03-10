@@ -1,18 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   Card,
-  Heading,
   TextContainer,
-  DisplayText,
-  TextStyle,
   TextField,
-  Form,
   ChoiceList,
 } from "@shopify/polaris";
 import { Toast } from "@shopify/app-bridge-react";
-import axios from "axios";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
-import { useParams } from "react-router-dom";
 
 export function ProductsCard() {
   const emptyToastProps = { content: null };
@@ -39,7 +33,7 @@ export function ProductsCard() {
   }, [data]);
 
   function dataRep() {
-      setSelected((data?.status === 1 ? '1' : '0') ?? 'No')
+      setSelected((data?.status === 1 ? '1' : '0') ?? '0')
       setScript(data?.script_link ?? '');
   }
 
@@ -58,7 +52,6 @@ export function ProductsCard() {
       });
 
       if (response.ok) {
-          // await refetchProductCount();
           setToastProps({ content: "Script tag updated!" });
           setIsLoading(false);
       } else {
