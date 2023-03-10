@@ -27,13 +27,11 @@ class ScriptTagAdder
     public static function generateScriptFile(Session $session, string $scriptLink, string $scriptStatus): void
     {
         $scriptJsName = self::PATH_TO_MAIN_JS_FILE . 'scriptTag-' . time() . '.js';
-        if (file_exists($scriptJsName)) {
-            Log::error('file exists in this directory');
+        $fromFilename = dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . self::PATH_TO_START_JS_FILE;
+        $toFilename = dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . $scriptJsName;
+        if (!copy($fromFilename, $toFilename)) {
+            Log::error('error with copying file');
         } else {
-            if (!copy(dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . self::PATH_TO_START_JS_FILE,
-                dirname(__DIR__, 2) . self::PATH_TO_SCRIPT_DIR . $scriptJsName)) {
-                Log::error('error with copying file');
-            }
             self::updateJsSettings($scriptJsName, $scriptLink, $scriptStatus);
             self::createScriptTag($session, $scriptJsName);
             self::createScriptTagRecord($session, $scriptLink, $scriptJsName, $scriptStatus);
@@ -69,7 +67,8 @@ class ScriptTagAdder
             'script_file' => $scriptJsName,
             'script_link' => $scriptLink,
             'status' => $scriptStatus,
-            'created_at' => date("Y-m-d H:i:s")];
+            'created_at' => date("Y-m-d H:i:s")
+        ];
 
         ScriptTagModel::where('script_tags')->insert($shop);
     }
