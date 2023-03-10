@@ -93,17 +93,11 @@ Route::get('/api/script/data', function (Request $request) {
     /** @var AuthSession */
     $session = $request->get('shopifySession');
     $shopData = ScriptTagModel::where('script_tags.shop', $session->getShop())->get();
-    Log::error($shopData);
     if (count($shopData) === 0) {
         return json_encode([]);
     } else {
         return json_encode($shopData[0]);
     }
-//    if (!empty($shopData[0])) {
-//        return json_encode($shopData[0]);
-//    } else {
-//        return json_encode([]);
-//    }
 })->middleware('shopify.auth');
 
 Route::post('/api/script/create', function (Request $request) {
