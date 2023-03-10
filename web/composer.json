@@ -8,6 +8,7 @@
         "php": "^7.4 || ^8.0 || ^8.1",
         "ext-xml": "*",
         "ext-zip": "*",
+        "ext-json": "*",
         "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^3.0",
