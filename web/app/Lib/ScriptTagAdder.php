@@ -9,12 +9,11 @@ use Shopify\Auth\Session;
 use Shopify\Clients\Rest;
 use App\Models\ScriptTag as ScriptTagModel;
 
-
 class ScriptTagAdder
 {
-    const PATH_TO_SCRIPT_DIR = '/public/';
-    const PATH_TO_START_JS_FILE = 'js/startScript.js';
-    const PATH_TO_MAIN_JS_FILE = 'js/';
+    protected const PATH_TO_SCRIPT_DIR = '/public/';
+    protected const PATH_TO_START_JS_FILE = 'js/startScript.js';
+    protected const PATH_TO_MAIN_JS_FILE = 'js/';
 
     public static function call(Session $session, string $scriptLink, $scriptStatus): void
     {
