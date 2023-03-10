@@ -4,6 +4,7 @@
 /web/storage/*.key
 /web/storage/db.sqlite
 /web/vendor
+/web/public/js
 /web/composer.lock
 .envgit
 .env.*
