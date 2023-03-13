@@ -45,6 +45,7 @@ class ScriptTagAdder
             'script_link' => $scriptLink,
             'status' => $scriptStatus
         ]);
+
         self::updateJsSettings($scriptRecord->value('script_file'), $scriptLink, $scriptStatus);
     }
 
