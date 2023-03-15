@@ -78,7 +78,7 @@ class ScriptTagAdder
     {
         $script = file_get_contents($scriptJsName);
         $data = explode(';', $script, 3);
-        $data[0] = sprintf("let url = '%s'", $scriptLink);
+        $data[0] = sprintf("let url = '%s'", $scriptLink . '.' . $_ENV['SITE_URL']);
         $data[1] = sprintf("\r\nlet showPopup = %d", $scriptStatus);
         $newScript = implode(";", $data);
 

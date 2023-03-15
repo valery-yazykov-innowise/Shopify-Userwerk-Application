@@ -50,7 +50,7 @@ setTimeout( () => {
     };
 
     if (showPopup) {
-        loadScript("https://" + url + ".staging.userwerk.com/uw.js")
+        loadScript("https://" + url)
             .then( data  => {
                 console.log("Script loaded successfully");
             })
