@@ -150,7 +150,7 @@ export function ScriptTagCard() {
                 </Modal.Section>
             </Modal>
             <FooterHelp>
-                Learn more about{' '}
+                Learn more about{" "}
                 <Link url="https://example.com">
                     privacy policy
                 </Link>
