@@ -44,7 +44,7 @@ export function ScriptTagCard() {
     }
 
     const toastMarkup = toastProps.content && (
-        <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
+        <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)}/>
     );
 
     const handlePopulate = async () => {
