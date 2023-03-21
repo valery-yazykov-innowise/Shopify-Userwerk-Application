@@ -151,7 +151,7 @@ export function ScriptTagCard() {
             </Modal>
             <FooterHelp>
                 Learn more about{" "}
-                <Link url="https://web.test/documents/privacy-policy.pdf">
+                <Link external="true" url="/documents/privacy-policy.pdf">
                     privacy policy
                 </Link>
             </FooterHelp>
