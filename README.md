@@ -92,7 +92,7 @@ These are the typical steps needed to set up a Laravel app once it's cloned:
    cd frontend/components
     ```
    
-2. Edit link to privacy policy (Line 154)
+2. Edit link to privacy policy. (Line 154)(Replace HOST)
 
     ```javascript
    <Link url="https://HOST/documents/privacy-policy.pdf">
