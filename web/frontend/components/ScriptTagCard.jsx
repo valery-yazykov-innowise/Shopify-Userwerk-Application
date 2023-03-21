@@ -140,9 +140,9 @@ export function ScriptTagCard() {
                         </p>
                         <p>
                             If you notice that for some reason your script tag does not work, you can email us:
-                            <Link url="mailto: example-email@gmail.com">
+                            <Link url="mailto: shopifysupport@userwerk.com">
                                 <b>
-                                    example-email@gmail.com
+                                    shopifysupport@userwerk.com
                                 </b>
                             </Link>
                         </p>
@@ -151,7 +151,7 @@ export function ScriptTagCard() {
             </Modal>
             <FooterHelp>
                 Learn more about{" "}
-                <Link url="https://example.com">
+                <Link url="https://web.test/documents/privacy-policy.pdf">
                     privacy policy
                 </Link>
             </FooterHelp>

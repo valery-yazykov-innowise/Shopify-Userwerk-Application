@@ -83,6 +83,23 @@ These are the typical steps needed to set up a Laravel app once it's cloned:
     ```shell
    npm install
     ```
+   
+### Additional Settings (Link to privacy policy)
+
+1. Open frontend folder and go to ScriptTagCard.jsx
+
+    ```shell
+   cd frontend/components
+    ```
+   
+2. Edit link to privacy policy (Line 154)
+
+    ```javascript
+   <Link url="https://HOST/documents/privacy-policy.pdf">
+        privacy policy
+   </Link>
+    ```
+
 
 ### Local Development
 
